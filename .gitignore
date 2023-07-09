@@ -1,3 +1,6 @@
+# Kat
+*.kate-swp
+
 # History files
 .Rhistory
 .Rapp.history
