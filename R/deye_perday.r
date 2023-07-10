@@ -68,12 +68,13 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
 
   deye %>% ggplot (aes (x = Day, y = Energy ) ) +
     geom_bar( stat='identity', color = 'green', fill = 'green'  ) +
+    geom_label ( aes( label = Energy)) +
     scale_x_date( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Power production', sep='')
            , subtitle = stitle
            , x ='Date'
-           , y ='Electrical power [Watt]' 
+           , y ='Produced electrical power [kWh]' 
            , colour = 'Lines'
            , fill = 'Fill'
            , caption = citation ) +
