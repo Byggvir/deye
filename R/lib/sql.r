@@ -3,12 +3,13 @@ library(RMariaDB)
 library(data.table)
 
 RunSQL <- function (
-  SQL = 'select * from Faelle;'
-  , prepare="set @i := 1;") {
+  SQL = 'select * from reports;'
+  , prepare="set @i := 1;" 
+  , database = 'solar' ) {
   
   rmariadb.settingsfile <- path.expand('~/R/sql.conf.d/DEYE.conf')
   
-  rmariadb.db <- "DEYE"
+  rmariadb.db <- database
   
   DB <- dbConnect(
     RMariaDB::MariaDB()
@@ -30,12 +31,13 @@ RunSQL <- function (
 }
 
 ExecSQL <- function (
-  SQL 
+  SQL  
+  , Database = 'solar'
 ) {
   
   rmariadb.settingsfile <- path.expand('~/R/sql.conf.d/DEYE.conf')
   
-  rmariadb.db <- "DEYE"
+  rmariadb.db <- database
   
   DB <- dbConnect(
     RMariaDB::MariaDB()

@@ -1,8 +1,9 @@
-use DEYE;
+use solar;
 
-drop table if exists deye;
+drop table if exists reports;
 -- 
-create table if not exists deye 
+
+create table if not exists reports 
 (
     `time` DATETIME NOT NULL
     , sn CHAR(64) DEFAULT '' NOT NULL
@@ -21,8 +22,8 @@ create table if not exists deye
 
 LOAD DATA LOCAL 
 INFILE '/tmp/deye.csv'      
-INTO TABLE `deye`
+INTO TABLE `reports`
 FIELDS TERMINATED BY ','
 IGNORE 0 ROWS;
 
-delete from deye where sn = '';
+delete from reports where sn = '';
