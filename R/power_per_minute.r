@@ -70,9 +70,9 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
   
     TTT = as.Date(TT, origin = '1970-01-01')
     
-  deye %>% filter ( Tag == TT ) %>% ggplot (aes (x = time, y = now_p ) ) +
+  deye %>% filter ( Tag == TT ) %>% ggplot (aes ( x = time , y = now_p ) ) +
     geom_bar( stat = 'identity', color = 'green', fill = 'green' ) +
-    scale_x_datetime( ) +
+    scale_x_datetime( limits = c(as_datetime(TT*3600*24),as_datetime((TT+1)*3600*24)) ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     expand_limits(y = c(0,400)) +
     labs(  title = paste('Power production', sep='')
@@ -84,20 +84,20 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
            , caption = citation ) +
     theme_ipsum() -> p
   
-  ggsave(  file = paste( outdir, 'power_', TTT, '.svg', sep = '')
+  ggsave(  file = paste( outdir, 'power_', TTT, '.png', sep = '')
            , plot = p
            , bg = "white"
-           , device = 'svg'
+           , device = 'png'
            , width = 1920
            , height = 1080
            , units = "px"
            , dpi = 144 )
   }
   
-  ggsave(  file = paste( outdir, 'power.svg', sep = '')
+  ggsave(  file = paste( outdir, 'power.png', sep = '')
            , plot = p
            , bg = "white"
-           , device = 'svg'
+           , device = 'png'
            , width = 1920
            , height = 1080
            , units = "px"
