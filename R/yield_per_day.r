@@ -68,7 +68,7 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
 
   deye %>% ggplot (aes (x = Day, y = Energy ) ) +
     geom_bar( stat='identity', color = 'green', fill = 'green'  ) +
-    geom_label ( aes( label = Energy)) +
+    geom_label ( aes( label = format(round(Energy, digits=2), nsmall = 1) )) +
     scale_x_date( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Power production', sep='')
