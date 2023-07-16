@@ -71,7 +71,7 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
     geom_label ( aes( label = format(round(Energy, digits=2), nsmall = 1) )) +
     scale_x_date( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
-    labs(  title = paste('Power production', sep='')
+    labs(  title = paste('Energy production', sep='')
            , subtitle = stitle
            , x ='Date'
            , y ='Yield [kWh]' 
