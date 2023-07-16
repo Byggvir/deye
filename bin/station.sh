@@ -1,15 +1,21 @@
 #!/bin/bash
 
-DIR=$(dirname $0)
-echo $DIR
+IP=10.10.100.254
+USER=admin
+PW=admin
+SQLUSER=solar
+SQLPW=solar
 
+[ -f '/etc/deye.conf' ] && while read LINE; do export $LINE ; done < /etc/deye.conf
+
+DIR=$(dirname $0)
 D=$(date '+%F %H:%M')
 
-curl --user thomas:<your-password> 'http://<your-ip4-addr>/status.html' 2>/dev/null > /tmp/status_station.html
+curl --user "$USER:$PW" "http://$IP/status.html" 2> /dev/null > /tmp/status_station.html
 
 if [ $? -eq 0 ]
 then
-    echo 1
+
     cat /tmp/status_station.html \
     | grep -E '(var cover_|var webdata_)'  \
     | sed '/webdata_rate_p/,/webdata_utime/d' \
@@ -21,8 +27,9 @@ then
     
     if  [ -s /tmp/status_station.html ] 
     then
-        echo $DIR/../SQL/update_station.sql
-        cat $DIR/../SQL/update_station.sql | mysql --user=solar --password=of9Aing7lec2uho3aiquahsa solar
+
+        cat $DIR/../SQL/update_station.sql | mysql --user="$SQLUSER" --password="$SQLWD" solar
     
     fi
+    
 fi

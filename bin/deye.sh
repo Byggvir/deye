@@ -1,8 +1,16 @@
 #!/bin/bash
 
+IP=10.10.100.254
+USER=admin
+PW=admin
+SQLUSER=solar
+SQLPW=solar
+
+[ -f '/etc/deye.conf' ] && while read LINE; do export $LINE ; done < /etc/deye.conf
+
 D=$(date '+%F %H:%M')
 
-curl --user thomas:<your-password> 'http://<your-inverter-ip>/status.html' 2>/dev/null > /tmp/status.html
+curl --user "$USER:$PW" "http://$IP/status.html" 2>/dev/null > /tmp/status.html
 if [ $? -eq 0 ]
 then
     cat /tmp/status.html \
@@ -23,13 +31,12 @@ then
 USE solar;
 
 LOAD DATA LOCAL 
- INFILE '/tmp/deye_last.csv'      
- INTO TABLE reports
- FIELDS TERMINATED BY ','
- IGNORE 0 ROWS;
+    INFILE '/tmp/deye_last.csv'      
+    INTO TABLE reports
+    FIELDS TERMINATED BY ','
+    IGNORE 0 ROWS;
 EOF
-        ) | mysql --user=solar --password=<your-password> solar
+        ) | mysql --user="$SQLUSER" --password="$SQLPWD" solar
     
     fi
 fi
-
