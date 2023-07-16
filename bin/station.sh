@@ -5,7 +5,7 @@ echo $DIR
 
 D=$(date '+%F %H:%M')
 
-curl --user thomas:thohx1aekohTeiz 'http://192.168.20.148/status.html' 2>/dev/null > /tmp/status_station.html
+curl --user thomas:<your-password> 'http://<your-ip4-addr>/status.html' 2>/dev/null > /tmp/status_station.html
 
 if [ $? -eq 0 ]
 then
