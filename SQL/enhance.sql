@@ -3,9 +3,7 @@ use solar;
 drop table if exists stations;
  
 create table if not exists stations 
-(   `id` BIGINT(20) NOT NULL AUTO_INCREMENT
-    , name CHAR(64) DEFAULT ''
-    , sn CHAR(64) DEFAULT ''
+(   sn CHAR(64) DEFAULT ''
     , msvn CHAR(64) DEFAULT ''
     , ssvn CHAR(64) DEFAULT ''
     , pv_type CHAR(64) DEFAULT ''
@@ -19,9 +17,10 @@ create table if not exists stations
     , sta_rssi FLOAT DEFAULT 0
     , sta_ip4 CHAR(15) DEFAULT ""
     , sta_mac CHAR(17) DEFAULT ""
-    , TS DATETIME DEFAULT NULL
+    , name CHAR(64) DEFAULT ''
     , location_lat DOUBLE DEFAULT 0
     , location_lon DOUBLE DEFAULT 0
-    , primary key ( `id` ) 
+    , TS DATETIME DEFAULT NULL
+    , primary key ( `sn` ) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 
 ;
