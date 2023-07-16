@@ -1,7 +1,6 @@
 use solar;
 
 drop table if exists reports;
--- 
 
 create table if not exists reports 
 (
@@ -25,5 +24,3 @@ INFILE '/tmp/deye.csv'
 INTO TABLE `reports`
 FIELDS TERMINATED BY ','
 IGNORE 0 ROWS;
-
-delete from reports where sn = '';
