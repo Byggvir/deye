@@ -1,6 +1,6 @@
 <?php
 /**
- * weatherdb.php
+ * solardb.php
  *
  * @package default
  */
@@ -8,11 +8,15 @@
 
 /*
  * Autor: Thomas Arend
- * Stand: 2023-07-13
+ * Stand: 2023-07-16
  *
  * Better quick and dirty than perfect but never!
  *
- * Security token to detect direct calls of included libraries. */
+ * Security token to detect direct calls of included libraries. 
+ *
+ * Change password below and rename to solardb.php.
+ *
+ */
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
@@ -23,7 +27,7 @@ defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 $dbhost = "localhost";          /* Change here when you don't use a locol server */
 $dbname = "solar";    /* Change database name here; Maybe your provider assigns a dbname */
 $dbuser = "solar";            /* Change user here */
-$dbpass = "of9Aing7lec2uho3aiquahsa";            /* Change password !!! */
+$dbpass = "change-passord";            /* Change password !!! */
 
 $mysqli = new mysqli($dbhost, $dbuser, $dbpass, $dbname) or die();
 
