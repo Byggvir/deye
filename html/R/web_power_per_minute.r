@@ -74,7 +74,7 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
     
   deye %>% filter ( Tag == TT ) %>% ggplot (aes (x = time, y = now_p ) ) +
     geom_bar( stat = 'identity', color = 'green', fill = 'green' ) +
-    scale_x_datetime( ) +
+    scale_x_datetime( limits = c(as_datetime(TT*3600*24),as_datetime((TT+1)*3600*24)) ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     expand_limits(y = c(0,400)) +
     labs(  title = paste('Power production', sep='')
