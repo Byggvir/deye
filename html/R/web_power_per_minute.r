@@ -65,8 +65,8 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', now)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-  deye = RunSQL(SQL = paste( 'select *, date(`time`) as Tag from reports where `time` > "2023-07-09 00:00:00";' ) )
-  Tage = RunSQL(SQL = 'select distinct date(`time`) as Tag from reports where `time` > "2023-07-09 00:00:00";')
+  deye = RunSQL(SQL = paste0( 'select *, date(`time`) as Tag from reports;' ) )
+  Tage = RunSQL(SQL = paste0( 'select distinct date(`time`) as Tag from reports where `time` > "', heute, '";' ) )
   
   for ( TT in Tage$Tag) {
   
