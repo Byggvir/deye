@@ -28,7 +28,7 @@ then
     if  [ -s /tmp/status_station.html ] 
     then
 
-        cat $DIR/../SQL/update_station.sql | mysql --user="$SQLUSER" --password="$SQLWD" solar
+        cat $DIR/../SQL/update_station.sql | mysql --user="$SQLUSER" --password="$SQLPW" solar
     
     fi
     
