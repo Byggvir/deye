@@ -66,8 +66,7 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
   deye = RunSQL(SQL = paste0( 'select *, date(`time`) as Tag from reports;' ) )
-  Tage = RunSQL(SQL = paste0( 'select distinct date(`time`) as Tag from reports where `time` > "', heute, '";' ) )
-  
+  Tage = RunSQL(SQL = paste0( 'select distinct date(`time`) as Tag from reports where date(`time`) = "', format(today,"%F"), '";' ) )  
   for ( TT in Tage$Tag) {
   
     TTT = as.Date(TT, origin = '1970-01-01')
