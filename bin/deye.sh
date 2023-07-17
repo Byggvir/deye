@@ -11,11 +11,11 @@ DNS=solar.dyn.byggvir.de
 
 D=$(date '+%F %H:%M')
 
-curl --user "$USER:$PW" "http://$IP/status.html"
 curl --user "$USER:$PW" "http://$IP/status.html" 2>/dev/null > /tmp/status.html
 if [ $? -eq 0 ]
 then
     cat /tmp/status.html \
+    | sed '/webdata_rate_p/ s#""#"0"#' \
     | grep 'var web' \
     | sed 's#.* = "##; s#".*##; s# *##g;' \
     | tr '\n' ',' \
