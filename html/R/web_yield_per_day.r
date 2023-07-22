@@ -1,14 +1,14 @@
 #!/usr/bin/env Rscript
 #
 #
-# Script: deye.r
+# Script: web_yield_per_day
 #
 # Stand: 2023-07-08
 # (c) 2023 by Thomas Arend, Rheinbach
 # E-Mail: thomas@arend-rhb.de
 #
 
-MyScriptName <- "yield_per_day.r"
+MyScriptName <- "web_yield_per_day.r"
 
 require(data.table)
 library(tidyverse)
@@ -65,8 +65,9 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', now)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-  deye = RunSQL(SQL = paste( 'select date(`time`) as Day, max(today_e) as Energy from reports group by Day;' ) )
-  
+  deye = RunSQL(SQL = paste( 'select date(`time`) as Day, max(today_e) as Energy from reports where date(`time`) > adddate(date(now()), interval -7 day ) group by Day;' ) )
+
+
 
   deye %>% ggplot (aes (x = Day, y = Energy ) ) +
     geom_bar( stat='identity', color = 'green', fill = 'green'  ) +
