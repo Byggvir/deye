@@ -1,14 +1,14 @@
 #!/usr/bin/env Rscript
 #
 #
-# Script: deye.r
+# Script: power_per_minute.r
 #
 # Stand: 2023-07-08
 # (c) 2023 by Thomas Arend, Rheinbach
 # E-Mail: thomas@arend-rhb.de
 #
 
-MyScriptName <- "deye.r"
+MyScriptName <- "power_per_minute.r"
 
 require(data.table)
 library(tidyverse)
@@ -63,18 +63,18 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-  deye = RunSQL(SQL = paste( 'select *, date(`time`) as Tag from reports where `time` > "2023-07-09 00:00:00";' ) )
-  Tage = RunSQL(SQL = 'select distinct date(`time`) as Tag from reports where `time` > "2023-07-09 00:00:00";')
+deye = RunSQL(SQL = paste0( 'select *, date(`time`) as Tag from reports;' ) )
+Tage = RunSQL(SQL = paste0( 'select distinct date(`time`) as Tag from reports where date(`time`) = "', format(today,"%F"), '";' ) )  
+
+for ( TT in Tage$Tag) {
   
-  for ( TT in Tage$Tag) {
-  
-    TTT = as.Date(TT, origin = '1970-01-01')
+  TTT = as.Date(TT, origin = '1970-01-01')
     
   deye %>% filter ( Tag == TT ) %>% ggplot (aes ( x = time , y = now_p ) ) +
     geom_bar( stat = 'identity', color = 'green', fill = 'green' ) +
     scale_x_datetime( limits = c(as_datetime(TT*3600*24),as_datetime((TT+1)*3600*24)) ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
-    expand_limits(y = c(0,400)) +
+    expand_limits(y = c(0,800)) +
     labs(  title = paste('Power production', sep='')
            , subtitle =  TTT
            , x ='Date / Time'

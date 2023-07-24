@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 #
 #
-# Script: yield_per_day.r
+# Script: deye.r
 #
 # Stand: 2023-07-08
 # (c) 2023 by Thomas Arend, Rheinbach
@@ -46,7 +46,7 @@ setwd(WD)
 source("R/lib/myfunctions.r")
 source("R/lib/sql.r")
 
-outdir <- 'png/daily/'
+outdir <- 'png/'
 dir.create( outdir , showWarnings = FALSE, recursive = FALSE, mode = "0777")
 
 options( 
@@ -62,14 +62,14 @@ heute <- format(today, "%d %b %Y")
 citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
+deye = RunSQL(SQL = paste( 'select date(`time`) as Day , min(time(`time`)) as Time, today_e as Energy from reports where date(`time`) >= adddate(date(now()), interval -7 day) group by Day, Energy;' ) )
+  deye$Day <- factor(deye$Day)
 
-  deye = RunSQL(SQL = paste( 'select date(`time`) as Day, max(today_e) as Energy from reports where date(`time`) > adddate(date(now()), interval -14 day ) group by Day;' ) )
-  
-
-  deye %>% ggplot (aes (x = Day, y = Energy ) ) +
-    geom_bar( stat='identity', color = 'green', fill = 'green'  ) +
-    geom_label ( aes( label = format(round(Energy, digits=2), nsmall = 1) )) +
-    scale_x_date( ) +
+  deye %>% ggplot (aes (x = Time, y = Energy, colour = Day ) ) +
+    #geom_smooth( ) +
+    geom_line( ) +
+    geom_point( ) +
+    scale_x_time( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Energy production', sep='')
            , subtitle = stitle
@@ -78,7 +78,7 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
            , caption = citation ) +
     theme_ipsum() -> p
   
-  ggsave(  file = paste( outdir, 'yield_per_day.png', sep = '')
+  ggsave(  file = paste( outdir, 'yield.png', sep = '')
            , plot = p
            , bg = "white"
            , width = 1920
