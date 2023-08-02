@@ -1,5 +1,7 @@
 use solar;
 
+update reports set today_e = 0 where hour(time) <7 and today_e > 0.5;
+
 update reports as R1 
 join reports as R2 
 on 
