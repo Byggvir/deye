@@ -35,7 +35,8 @@ include_once 'solarlib.php';
 
 <?php
 
-    solarReport();
+    SolarReport();
+    StationList();
 
     $mysqli->close();
 
@@ -54,6 +55,12 @@ include_once 'solarlib.php';
 <section class="chart">
     <div id="r-output2" class="diagram" >
     <img src="png/power.svg" alt="R Graph" />
+    </div>
+</section>
+
+<section class="chart">
+    <div id="r-output3" class="diagram" >
+    <img src="png/yield.svg" alt="R Graph" />
     </div>
 </section>
 

@@ -79,7 +79,8 @@ deye = RunSQL(SQL = paste( 'select date(`time`) as Day , min(time(`time`)) as Ti
            , caption = citation ) +
     theme_ipsum() -> p
   
-  ggsave(  file = paste( outdir, 'yield.png', sep = '')
+  ggsave(  file = paste( outdir, 'yield.svg', sep = '')
+           , device = 'svg'
            , plot = p
            , bg = "white"
            , width = 1920
