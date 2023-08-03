@@ -68,7 +68,7 @@ function StationList () {
   
   if ($reports = $mysqli->query($SQL)) {
     echo "<table>" ;
-    echo "<tr><th>id</th><th>Name</th><th>Seriennummer</th><th>Latitude</th><th>Longitude</th></tr>\n" ;
+    echo "<tr><th>Name</th><th>Seriennummer</th><th>Latitude</th><th>Longitude</th></tr>\n" ;
     
     while ($result = $reports->fetch_assoc()) {
 
