@@ -73,7 +73,6 @@ function StationList () {
     while ($result = $reports->fetch_assoc()) {
 
       echo "<tr>\n";
-      echo "<td>" . $result["id"] . "</td>\n" ;
       echo "<td>" . $result["name"] . "</td>\n" ;
       echo "<td>" . $result["sn"] . "</td>\n" ;
       echo "<td>" . $result["location_lat"] . "</td>\n" ;
