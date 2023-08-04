@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 #
 #
-# Script: web_yield_per_day
+# Script: web_yield_per_day.r
 #
 # Stand: 2023-07-08
 # (c) 2023 by Thomas Arend, Rheinbach

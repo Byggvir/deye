@@ -67,9 +67,9 @@ deye = RunSQL(SQL = paste( 'select date(`time`) as Day , min(time(`time`)) as Ti
   maxDay = max(deye$Day)
   
   deye %>% ggplot ( aes (x = Time, y = Energy )  ) +
-    geom_smooth( level = 0.99 ) +
-    geom_line( data = deye %>% filter(Day == maxDay),  aes (x = Time, y = Energy, colour = Days ) ) +
-    geom_point( data = deye %>% filter(Day == maxDay), aes (x = Time, y = Energy, colour = Days ) ) +
+    geom_smooth( aes( colour = 'Average' ), level = 0.99, method = 'loess', formula = 'y ~ x' ) +
+    geom_line( data = deye %>% filter( Day == maxDay ),  aes (x = Time, y = Energy, colour = Days ), linewidth = 1.5) +
+    geom_point( data = deye %>% filter( Day == maxDay ), aes (x = Time, y = Energy, colour = Days ), size = 3 ) +
     scale_x_time( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Energy production', sep='')

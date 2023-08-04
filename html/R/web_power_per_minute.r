@@ -1,14 +1,14 @@
 #!/usr/bin/env Rscript
 #
 #
-# Script: deye.r
+# Script: web_power_per_minute.r
 #
-# Stand: 2023-07-08
+# Stand: 2023-07-23
 # (c) 2023 by Thomas Arend, Rheinbach
 # E-Mail: thomas@arend-rhb.de
 #
 
-MyScriptName <- "deye.r"
+MyScriptName <- "web_power_per_minute.r"
 
 require(data.table)
 library(tidyverse)
@@ -75,7 +75,7 @@ stitle <- paste ('Mittelerde Balkonkraftwerk')
     geom_bar( stat = 'identity', color = 'green', fill = 'green' ) +
     scale_x_datetime( limits = c(as_datetime(TT*3600*24),as_datetime((TT+1)*3600*24)) ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
-    expand_limits(y = c(0,400)) +
+    expand_limits(y = c(0,800)) +
     labs(  title = paste('Power production', sep='')
            , subtitle =  TTT
            , x ='Date / Time'

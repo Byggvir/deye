@@ -63,13 +63,14 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-  deye = RunSQL(SQL = paste( 'select date(`time`) as Day, max(today_e) as Energy from reports where date(`time`) > adddate(date(now()), interval -14 day ) group by Day;' ) )
+  deye = RunSQL(SQL = paste( 'select * from ( select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag, max(today_e) as Energy from reports group by Datum union select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag,today_e as Energy from daily_yield ) as R order by Datum ;' ) )
+  deye$Monate = factor(deye$Monat, levels = 1:12, labels = Monatsnamen )
   
-
-  deye %>% ggplot (aes (x = Day, y = Energy ) ) +
+  deye %>% ggplot (aes ( x = Tag, y = Energy) ) +
     geom_bar( stat='identity', color = 'green', fill = 'green'  ) +
-    geom_label ( aes( label = format(round(Energy, digits=2), nsmall = 1) )) +
-    scale_x_date( ) +
+    geom_label ( aes( label = format(round(Energy, digits=2), nsmall = 1) ) , angle = 90) +
+     # scale_x_date( ) +
+    facet_wrap (vars(Monate), nrow = 2) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Energy production', sep='')
            , subtitle = stitle
