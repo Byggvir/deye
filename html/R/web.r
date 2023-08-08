@@ -74,7 +74,7 @@ deye = RunSQL(SQL = paste( 'select date(`time`) as Day , min(time(`time`)) as Ti
     geom_point( data = deye %>% filter( Day == maxDay ), aes (x = Time, y = Energy, colour = Days ), size = 3 ) +
     scale_x_time( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
-    labs(  title = paste('Energy production', sep='')
+    labs(  title = paste('Cumulative Energy Production', sep='')
            , subtitle = stitle
            , x ='Date'
            , y ='Yield [kWh]' 
