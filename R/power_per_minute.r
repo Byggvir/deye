@@ -63,25 +63,27 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-deye = RunSQL(SQL = paste0( 'select *, date(`time`) as Tag from reports;' ) )
+Power = RunSQL(SQL = paste0( 'select *, date(`time`) as Tag from reports;' ) )
 Tage = RunSQL(SQL = paste0( 'select distinct date(`time`) as Tag from reports where date(`time`) = "', format(today,"%F"), '";' ) )  
+#Tage = RunSQL(SQL = paste0( 'select distinct date(`time`) as Tag from reports;' ) )  
 
 for ( TT in Tage$Tag) {
   
   TTT = as.Date(TT, origin = '1970-01-01')
     
-  deye %>% filter ( Tag == TT ) %>% ggplot (aes ( x = time , y = now_p ) ) +
+  Power %>% filter ( Tag == TT ) %>% ggplot (aes ( x = time , y = now_p ) ) +
     geom_bar( stat = 'identity', color = 'green', fill = 'green' ) +
     scale_x_datetime( limits = c(as_datetime(TT*3600*24),as_datetime((TT+1)*3600*24)) ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     expand_limits(y = c(0,800)) +
-    labs(  title = paste('Power production', sep='')
+    labs(  title = paste('Solar power during the day', sep='')
            , subtitle =  TTT
            , x ='Date / Time'
            , y ='Electrical power [Watt]' 
            , colour = 'Lines'
            , fill = 'Fill'
-           , caption = citation ) +
+           , caption = citation
+           , colour = 'Legend'  ) +
     theme_ipsum() -> p
   
   ggsave(  file = paste( outdir, 'power_', TTT, '.png', sep = '')
@@ -102,3 +104,5 @@ for ( TT in Tage$Tag) {
            , height = 1080
            , units = "px"
            , dpi = 144 )
+  
+  

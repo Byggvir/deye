@@ -26,6 +26,9 @@ begin
   where 
       ( R1.total_e = 0 and R2.total_e <> 0 and R3.total_e <> 0 )
       or ( R1.today_e = 0 and R2.today_e <> 0 and R3.today_e <> 0 );
+
+  delete from reports where total_e = 0;
+  
 end //
 
 delimiter ;

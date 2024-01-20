@@ -8,8 +8,6 @@
 # E-Mail: thomas@arend-rhb.de
 #
 
-MyScriptName <- "yield.r"
-
 require(data.table)
 library(tidyverse)
 library(grid)
@@ -62,24 +60,26 @@ heute <- format(today, "%d %b %Y")
 citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
-deye = RunSQL(SQL = paste( 'select date(`time`) as Day , min(time(`time`)) as Time, today_e as Energy from reports where date(`time`) >= "2023-07-16" group by Day, Energy;' ) )
-  deye$Days <- factor(deye$Day)
-  maxDay = max(deye$Day)
+  Energy = RunSQL(SQL = paste( 'select date(`time`) as Day , min(time(`time`)) as Time, today_e as Energy from reports where date(`time`) >= "2023-07-16" group by Day, Energy;' ) )
+  Energy$Days <- factor(Energy$Day)
+  maxDay = max(Energy$Day)
   
-  deye %>% ggplot ( aes ( x = Time, y = Energy )  ) +
-    geom_smooth( aes( colour = 'Average' ), level = 0.99, method = 'loess', formula = 'y ~ x' ) +
-    geom_line( data = deye %>% filter( Day == maxDay ),  aes (x = Time, y = Energy, colour = Days ), linewidth = 1.5) +
-    geom_point( data = deye %>% filter( Day == maxDay ), aes (x = Time, y = Energy, colour = Days ), size = 3 ) +
+  Energy %>% ggplot ( ) +
+    geom_smooth( aes( x = Time, y = Energy, colour = 'Average' ), level = 0.99, method = 'loess', formula = 'y ~ x' ) +
+   # geom_line( aes (x = Time, y = Energy, colour = Days ), linewidth = 1.5) +
+    geom_line( data = Energy %>% filter( Day == maxDay ),  aes (x = Time, y = Energy, colour = Days ), linewidth = 1.5) +
+    geom_point( data = Energy %>% filter( Day == maxDay ), aes (x = Time, y = Energy, colour = Days ), size = 3 ) +
     scale_x_time( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Cumulative Energy Production', sep='')
            , subtitle = stitle
            , x ='Date'
-           , y ='Yield [kWh]' 
-           , caption = citation ) +
+           , y ='Energy [kWh]' 
+           , caption = citation
+           , colour = 'Legend'  ) +
     theme_ipsum() -> p
   
-  ggsave(  file = paste( outdir, 'yield.png', sep = '')
+  ggsave(  file = paste( outdir, 'yield_cumulative.png', sep = '')
            , plot = p
            , bg = "white"
            , width = 1920

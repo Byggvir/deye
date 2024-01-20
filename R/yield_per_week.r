@@ -1,15 +1,12 @@
 #!/usr/bin/env Rscript
 #
 #
-# Script: max_power_per_day.r
+# Script: yield_per_week.r
 #
 # Stand: 2023-07-08
 # (c) 2023 by Thomas Arend, Rheinbach
 # E-Mail: thomas@arend-rhb.de
 #
-
-MyScriptName <- "max_power_per_day.r"
-
 require(data.table)
 library(tidyverse)
 library(grid)
@@ -46,7 +43,7 @@ setwd(WD)
 source("R/lib/myfunctions.r")
 source("R/lib/sql.r")
 
-outdir <- 'png/daily/'
+outdir <- 'png/weekly/'
 dir.create( outdir , showWarnings = FALSE, recursive = FALSE, mode = "0777")
 
 options( 
@@ -63,25 +60,31 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-  deye = RunSQL(SQL = paste( 'select * from max_power_day ;' ) )
-  deye %>% filter (sn != '' ) %>% ggplot (aes ( x = Datum, y = Power ) ) +
-    geom_bar( stat='identity', color = 'green', fill = 'green' ) +
-    geom_smooth( method = 'loess', formula = y ~ x , alpha = 0.5) +
-#    geom_label ( aes( label = Power ), angle = 90) +
-    scale_x_date( ) +
-#    facet_wrap (vars(Monate), nrow = 2) +
+Yield = RunSQL( SQL = 'select * from energy_per_week;' ) 
+Yield$labels = paste0( Yield$Kw %/% 100 , '-', Yield$Kw %% 100 )
+
+max_Energy = max(Yield$Energy)
+
+  Yield %>% ggplot (aes ( x = labels , y = Energy ) ) +
+    geom_bar( stat = 'identity', color = 'green', fill = 'green' ) +
+    geom_label( aes ( y = 0, label = paste (Energy, '\n', round(Energy / max_Energy * 100,1) , ' %', sep = '') ), size = 3 ) +
+    # scale_x_discrete( ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
-    labs(  title = paste('Maximum power during the day', sep='')
-           , subtitle = stitle
-           , x ='Date'
-           , y ='Power [W]' 
-           , caption = citation 
-           , colour = 'Legend' ) +
-    theme_ipsum() -> p
+    labs(  title = paste('Energie pro Woche', sep='')
+           , subtitle =  stitle
+           , x = 'Woche'
+           , y = 'Energie [kWh]' 
+           , colour = 'Legende'
+           , fill = 'Fill'
+           , caption = citation
+           , colour = 'Legend'  ) +
+    theme_ipsum() + 
+    theme( axis.text.x = element_text( vjust = 0.5, angle = 90 ) ) -> p
   
-  ggsave(  file = paste( outdir, 'max_power_during_the_day.png', sep = '')
+  ggsave(  file = paste( outdir, 'yield_per_week.png', sep = '')
            , plot = p
            , bg = "white"
+           , device = 'png'
            , width = 1920
            , height = 1080
            , units = "px"

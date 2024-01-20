@@ -63,20 +63,29 @@ citation <- paste( '(cc by 4.0) 2023 by Thomas Arend; Stand:', heute)
 stitle <- paste ('Mittelerde Balkonkraftwerk')
 
 
-  deye = RunSQL(SQL = paste( 'select * from ( select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag, max(today_e) as Energy from reports group by Datum union select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag,today_e as Energy from daily_yield ) as R order by Datum ;' ) )
+  # deye = RunSQL(SQL = paste( 'select * from' 
+  #   , '( select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag, max(today_e) as Energy from reports group by Datum'
+  #   , ' union select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag, today_e as Energy from daily_yield )'
+  #   , ' as R order by Datum ;' ) )
+  deye = RunSQL(SQL = paste( 'select date(`time`) as Datum, year(`time`) as Jahr, month(`time`) as Monat, day(`time`) as Tag, max(today_e) as Energy from reports group by Datum ;' ) )
+                          
+  
   deye$Monate = factor(deye$Monat, levels = 1:12, labels = Monatsnamen )
   
-  deye %>% ggplot (aes ( x = Tag, y = Energy) ) +
+  deye %>% filter (Jahr == 2024 ) %>%
+    ggplot (aes ( x = Datum, y = Energy) ) +
     geom_bar( stat='identity', color = 'green', fill = 'green'  ) +
     geom_label ( aes( label = format(round(Energy, digits=2), nsmall = 1) ) , angle = 90) +
      # scale_x_date( ) +
     facet_wrap (vars(Monate), nrow = 2) +
+    scale_x_date( date_labels = '%d' ) +
     scale_y_continuous( labels = function (x) format(x, big.mark = ".", decimal.mark= ',', scientific = FALSE ) ) +
     labs(  title = paste('Energy production', sep='')
            , subtitle = stitle
            , x ='Date'
            , y ='Yield [kWh]' 
-           , caption = citation ) +
+           , caption = citation 
+           , colour = 'Legend' ) +
     theme_ipsum() -> p
   
   ggsave(  file = paste( outdir, 'yield_per_day.png', sep = '')
